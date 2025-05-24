@@ -1,0 +1,1 @@
+Examples of haskell programs for experimenting with functional programming. Note that code is only tested on https://play.haskell.org/
