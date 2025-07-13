@@ -1,4 +1,6 @@
 *
+!*/*.hs
+!*/**.hs
 !*.hs
 !README.md
 !.gitignore
