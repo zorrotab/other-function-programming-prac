@@ -3,6 +3,8 @@ import System.IO
 import GHC.Float (int2Float)
 import Distribution.Parsec (incPos)
 import Prelude
+import Control.Applicative
+import Data.Maybe
 
 
 -- Integer maths
@@ -50,11 +52,21 @@ divideFloat x y = x / y
 addNum :: Float -> Int -> Float
 addNum x y = x + (int2Float y)
  
- -- List Maths
+-- List Maths
 addNumtoList :: [Int] -> Int -> [Int]
 addNumtoList x y = do
                 let addNum z = z + y
                 map addNum x
+
+-- Some functions for trying out composition
+tripleNum :: Int -> Int
+tripleNum x = x * 3
+
+minusTen :: Int -> Int
+minusTen x = x - 10
+
+-- Some functions for functors
+f1 x y = 2*x + y
 
 
 main = do 
@@ -72,7 +84,11 @@ main = do
     let num5 = (fact.round) (2.3)
     let num6 = num5 + num4
 
+    -- Composition functions on a single integer
+    let num7 = (tripleNum.minusTen.fact.round) (3.1)
     
+    -- Composition and higher order functions on an array
+    let nums4 = map (tripleNum.minusTen.fact) (nums1)
 
     -- Working with strings
     putStrLn ("The answer to the first series of equations: " ++ (show num6))
@@ -84,6 +100,20 @@ main = do
     putStrLn ("3 to the power of 1 = " ++ show (powerGuard 3 1))
     putStrLn ("3 to the power of 3 = " ++ show (powerGuard 3 3))
     print nums3
+    print num7
+    print nums4
 
+    -- functors
+    print (fmap (subtract 1) [2.3, 4, 6])
+    print (fmap (subtract 1) (Nothing))
+    print (fmap (subtract 1) (Just 3))
+    print (show $ f1 <$> (Just 1) <*> (Just 2))
 
-    
+    -- data Maybe a = Nothing | Just a
+    -- example of its usage
+    print (isJust (Just 3))
+    print (isJust (Nothing))
+    print (fromJust (Just 4))
+    print (fromMaybe "" (Just "Hello, World!"))
+    print (fromMaybe 1 (Just 3))
+    print (fromMaybe 1 (Nothing))
