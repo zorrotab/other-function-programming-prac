@@ -5,6 +5,7 @@ import Distribution.Parsec (incPos)
 import Prelude
 import Control.Applicative
 import Data.Maybe
+import Data.Monoid
 
 
 -- Integer maths
@@ -68,6 +69,16 @@ minusTen x = x - 10
 -- Some functions for functors
 f1 x y = 2*x + y
 
+-- Some functions for monads
+half x = if even x
+           then Just (x `div` 2)
+           else Nothing
+
+f x = Just (x + 1)
+g x = Just (x * 10)
+
+-- Some stuff for monoids
+newtype SumX a = Sum { getSum :: a }
 
 main = do 
    
@@ -117,3 +128,17 @@ main = do
     print (fromMaybe "" (Just "Hello, World!"))
     print (fromMaybe 1 (Just 3))
     print (fromMaybe 1 (Nothing))
+
+    -- Example of monads
+    print (Just 3 >>= half)
+    print (Just 6 >>= half)
+    print (Nothing >>= half)
+    print (Just 20 >>= half >>= half)
+    print ((Just 1 >>= f) >>= g)
+    print ((Just 1 >>= g) >>= f)
+    --getLine >>= readFile >>= putStrLn
+
+    -- Example of monoid
+    print ([1,2] <> mempty <> [3,4])
+
+    
